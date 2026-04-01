@@ -1,0 +1,23 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[letterpaper, top=1in,right=1in, bottom=1.5in]{geometry}
+\renewcommand{\baselinestretch}{1.10}
+\setlength{\parskip}{1.2em}
+\title{The Illusion of Linearity Between Perfect Squares}
+\author{Shubhankar Kumar \& Virat Dixit}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+\section{Introduction}
+In Computational Science, functions are treated as discrete data points rather than continuous curves but in mathematics, functions are defined by continuous analytical properties that dictate their curvature within the Cartesian plane. Through these patterns, we will try to understand the Maths behind the error given by the linear interpolation method for square roots.
+
+\subsection{Briefing Linear Interpolation}
+Linear Interpolation, commonly referred to in computer science as 'Lerp', is the most common and computationally efficient method used in fields ranging from computer graphics to signal processing. However, a fundamental discrepancy arises when linear segments are used to approximate non-linear, second-order functions such as $f(x) = x^2$. Although the interpolation yields zero error at defined integer nodes (perfect squares), an observable deviation occurs at all intermediate values, hereafter referred to as the 'Percentage Paradox' after proving that this deviation follows a predictable geometric pattern. By analyzing the discrete second-order differences of these sequences, a constant rate of change can be identified that the linear model fails to capture. 
+\subsection{The Problem of Linear Interpolation}
+The efficiency of Linear Interpolation comes at the cost of precision when applied to non-linear domains. For the function $f(x) = \sqrt{x}$ (or its inverse $f(x) = x^2$), the rate of change is not constant. By treating the interval between two perfect squares as a straight line, we effectively ignore the \textit{curvature} of the function. This paper investigates the "residual" left behind by this assumption, proving that the error is a direct result of treating a parabolic growth as a fixed linear percentage. 
+\section{Graph of Quadratic Function}
+
+\end{document}
