@@ -16,8 +16,125 @@ In Computational Science, functions are treated as discrete data points rather t
 
 \subsection{Briefing Linear Interpolation}
 Linear Interpolation, commonly referred to in computer science as 'Lerp', is the most common and computationally efficient method used in fields ranging from computer graphics to signal processing. However, a fundamental discrepancy arises when linear segments are used to approximate non-linear, second-order functions such as $f(x) = x^2$. Although the interpolation yields zero error at defined integer nodes (perfect squares), an observable deviation occurs at all intermediate values, hereafter referred to as the 'Percentage Paradox' after proving that this deviation follows a predictable geometric pattern. By analyzing the discrete second-order differences of these sequences, a constant rate of change can be identified that the linear model fails to capture. 
+in the square roots divided by the difference in the squares:
+\begin{equation}
+    \beta = a + \frac{i - a^2}{(a+1)^2 - a^2}
+\end{equation}
+\begin{equation}
+    \textbf{slope(m)} = \tan\theta = \frac{\beta}{i}
+\end{equation}
+
 \subsection{The Problem of Linear Interpolation}
-The efficiency of Linear Interpolation comes at the cost of precision when applied to non-linear domains. For the function $f(x) = \sqrt{x}$ (or its inverse $f(x) = x^2$), the rate of change is not constant. By treating the interval between two perfect squares as a straight line, we effectively ignore the \textit{curvature} of the function. This paper investigates the "residual" left behind by this assumption, proving that the error is a direct result of treating a parabolic growth as a fixed linear percentage. 
-\section{Graph of Quadratic Function}
+The efficiency of linear interpolation comes at the cost of precision when applied to non-linear domains. For the function $f(x)=\sqrt{x}$ the rate of change is not constant, instead, it compresses as $x$ grows, meaning equal steps in $x$ produce unequal steps in $\sqrt{x}$. When interpolating between two perfect squares, this compression is ignored entirely. This paper investigates the residual left behind by that assumption, proving that the error is a direct consequence of the geometric nature of $f(x)=\sqrt{x}$ itself is a function whose curvature makes any fixed proportional estimate between two known values structurally insufficient. The magnitude of this error, and the conditions under which it grows or shrinks, are derived and examined in full.
+
+\section{Proving Quadratic or Square Function as Parabolic}
+
+\subsection*{1. Differential Calculus Approach}
+Let the quadratic equation be:
+\[ f(x) = ax^2 + bx + c \]
+For the square function:
+\[ f(x) = x^2 \]
+
+\begin{itemize}
+    \item \textbf{i) Differentiation (Slope):}
+    \[ f'(x) = m = \frac{dy}{dx} = \frac{d(x^2)}{dx} = 2x \]
+    
+    \item \textbf{ii) Rate of change in slope:}
+    \[ f''(x) = \frac{dm}{dx} = \frac{d(2x)}{dx} = 2 \]
+\end{itemize}
+So, the slope changes by a constant $2$ units.
+
+\subsection*{2. Geometric Definition (Theoretical)}
+The standard formula for a parabola opening upwards is:
+\[ x^2 = 4ay \]
+Given the function $y = x^2$, we can write:
+\[ x^2 = y \]
+Comparing this with $x^2 = 4ay$:
+\[ 4a = 1 \implies a = \frac{1}{4} \]
+
+\begin{itemize}
+    \item \textbf{Focus:} $F(0, a) = (0, \frac{1}{4})$
+    \item \textbf{Directrix:} $y = -a = -\frac{1}{4}$
+\end{itemize}
+
+\subsection*{3. Verification of the Eccentricity}
+Let $P(x, x^2)$ be any point on the parabola.
+
+\textbf{Distance $D_1$ between $P(x, x^2)$ and focus $(0, \frac{1}{4})$:}
+\begin{align*}
+D_1 &= \sqrt{(x-0)^2 + \left(x^2 - \frac{1}{4}\right)^2} \\
+&= \sqrt{x^2 + (x^2)^2 + \left(\frac{1}{4}\right)^2 - 2(x^2)\left(\frac{1}{4}\right)} \\
+&= \sqrt{x^2 + x^4 + \frac{1}{16} - \frac{x^2}{2}} \\
+&= \sqrt{x^4 + \frac{x^2}{2} + \frac{1}{16}} \\
+&= \sqrt{\left(x^2 + \frac{1}{4}\right)^2} \\
+D_1 &= x^2 + \frac{1}{4}
+\end{align*}
+
+\textbf{Vertical distance $D_2$ of $P(x, x^2)$ from the directrix $y = -\frac{1}{4}$:}
+\begin{align*}
+D_2 &= |y - y_{directrix}| \\
+D_2 &= \left|x^2 - \left(-\frac{1}{4}\right)\right| \\
+D_2 &= x^2 + \frac{1}{4} \quad (\text{since } x^2 \geq 0)
+\end{align*}
+
+\subsection*{Conclusion}
+Since $D_1 = D_2$, the eccentricity $e$ is:
+\[ e = \frac{\text{distance to focus}}{\text{distance to directrix}} = \frac{D_1}{D_2} = 1 \]
+Because $e = 1$, the square function is confirmed to be a parabola.
+
+\subsection{Implementing Differentiation through Arithmetic Maths}
+Differentiation in broader terms is - $\triangle x = x_2 - x_1$
+\begin{equation}
+    f'(x^2) = \triangle x^2 = (x+1)^2 - x^2
+\end{equation}
+\begin{equation}
+    f''(x^2) = \triangle x_2^2 - \triangle x_1^2 = [(x+2)^2 - (x+1)^2] - [(x+1)^2 - x^2]
+\end{equation}
+\subsection*{Discrete Difference Table for Perfect Square $f(x) = x^2$}
+Below is the numerical representation of the first and second differences for the function $f(x) = x^2$.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|r|c|}
+\hline
+$x$ & $f(x) = x^2$ & \textbf{First Differentiation} ($\Delta x^2$) & \textbf{Second Diff} 
+($\Delta^2$) \\ \hline
+0 & 0 & - & - \\ \hline
+1 & 1 & $1-0 = 1$ & - \\ \hline
+2 & 4 & $4-1 = 3$ & $3-1 = 2$ \\ \hline
+3 & 9 & $9-4 = 5$ & $5-3 = 2$ \\ \hline
+4 & 16 & $16-9 = 7$ & $7-5 = 2$ \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection*{Discrete Difference Table for Non-Perfect Square $f(x) = \sqrt{x}$}
+Below is the numerical representation of the first and second differences for the function $f(x) = \sqrt{x}$.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+$x$ & $f(x) = \sqrt{x}$ & \textbf{First Difference} ($\Delta_1$) & \textbf{Second Difference} ($\Delta_2$) \\ \hline
+0 & 0 & - & - \\ \hline
+1 & 1.0000 & $1.0000 - 0 = 1.0000$ & - \\ \hline
+2 & 1.4142 & $1.4142 - 1.0000 = 0.4142$ & $0.4142 - 1.0000 = -0.5858$ \\ \hline
+3 & 1.7321 & $1.7321 - 1.4142 = 0.3179$ & $0.3179 - 0.4142 = -0.0963$ \\ \hline
+4 & 2.0000 & $2.0000 - 1.7321 = 0.2679$ & $0.2679 - 0.3179 = -0.0500$ \\ \hline
+\end{tabular}
+\end{table}
+Through this, we can assume that when $\sqrt{x}$ is the result, the slope decreases and the rate of change of slope is in negative but the slope never goes down instead it looks like it is parallel to x-axis. 
+
+To prove our assumption, we have to differentiate $f(x) = \sqrt{x}$
+\begin{equation}
+    f'(x) = \frac{dx^\frac{1}{2}}{dx} = \frac{1}{2\sqrt{x}}
+\end{equation}
+So, slope decreases as the $x$ increase
+\begin{equation}
+    f''(x) = \frac{d(\frac{1}{2\sqrt{(x)}}}{dx} = - \frac{1}{4{x^\frac{3}{2}}}
+\end{equation}
+The graph according to the rate of change of slope should be concave down but we know that $\Delta \sqrt{x} \to \infty$ it becomes $0$, so it does not make concave down graph. 
+\newpage
+\section{Proving Linear Interpolation Between Two Perfect Square is Straight Line}
+$1. $
 
 \end{document}
